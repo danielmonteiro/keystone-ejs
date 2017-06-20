@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+
+<div class="container"><%- include('../partials/header') %></div>
+<div class="container">
+	<h1>Gallery</h1>
+</div>
+<div class="container">
+	<div id="body">
+		<% if ( galleries.length ) { %>
+			<% galleries.forEach(function ( gallery ) { %>
+				<h2>
+					<%= gallery.name %>
+					<div class="pull-right text-muted"><%= gallery._.publishedDate.format('Do MMM YYYY') %></div>
+				</h2>
+				<div class="row gallery-images">
+					<% if ( gallery.heroImage.exists ) { %>
+						<div class="col-sm-4 col-md-4 gallery-image">
+							<img src="<%= gallery._.heroImage.limit(680,680) %>" class="img-rounded">
+						</div>
+						<div class="col-sm-8 col-md-8">
+							<div class="row">
+								<% gallery.images.forEach(function ( image ) { %>
+									<div class="col-xs-4 col-sm-4 col-md-3 gallery-image">
+										<img src="<%= image.limit(300,300) %>" class="img-rounded">
+									</div>
+								<% }) %>
+							</div>
+						</div>
+					<% } else { %>
+						<% gallery.images.forEach(function ( image ) { %>
+							<div class="col-xs-6 col-sm-4 col-md-3 gallery-image">
+								<img src="<%= image.limit(300,300) %>" class="img-rounded">
+							</div>
+						<% }) %>
+					<% } %>
+				</div>
+			<% }) %>
+		<% } else { %>
+			<h3 class="text-muted">There are no image galleries yet.</h3>
+		<% } %>
+	</div>
+</div>
+<div class="container"><%- include('../partials/footer') %></div>
