@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+	<h1>Hi <%= recipient.firstName %></h1>
+	<p class="text-larger">An enquiry was just submitted to <%= brand %></p>
+	<% if ( enquiry.name.full || enquiry.email ) { %>
+		<p class="text-larger">
+			From
+			<% if ( enquiry.name.full ) { %>
+				<strong><%= enquiry.name.full %></strong>
+			<% } %>
+			<% if ( enquiry.name.full && enquiry.email ) { %>(<% } %>
+			<% if ( enquiry.email ) { %>
+				<a href="mailto:<%= enquiry.email %>"><%= enquiry.email %></a>
+			<% } %>
+			<% if ( enquiry.name.full && enquiry.email ) { %>)<% } %>
+		</p>
+	<% } %>
+	<% if ( enquiry.phone ) { %>
+		<p class="text-larger">Phone: <%= enquiry.phone %></p>
+	<% } %>
+	<% if ( enquiry.enquiryType ) { %>
+		<p class="text-larger"><%= enquiry._.enquiryType.format() %></p>
+	<% } %>
+	<% if ( enquiry.message ) { %>
+		<p class="text-larger"><%- enquiry.message.html %></p>
+	<% } %>
+	<p class="text-muted">Sent <%= enquiry._.createdAt.format() %></p>
+</body>
+</html>
