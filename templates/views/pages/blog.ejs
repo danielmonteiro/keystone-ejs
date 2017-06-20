@@ -1,0 +1,99 @@
+<%- include('../partials/head') %>
+
+<div class="container"><%- include('../partials/header') %></div>
+<div class="container">
+	<div id="body">
+
+		<div class="container">
+			<h1><%= data.category ? data.category.name : 'Blog' %></h1>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8 col-md-9">
+
+					<% if ( filters.category && !data.category ) { %>
+						<h3 class="text-muted">Invalid Category.</h3>
+					<% } else { %>
+						<% if ( data.posts.results.length ) { %>
+							<% if ( data.posts.totalPages > 1 ) { %>
+								<h4 class="text-weight-normal">Showing <strong><%= data.posts.first %></strong> to <strong><%= data.posts.last %></strong> of <strong><%= data.posts.total %></strong> posts</h4>
+							<% } else { %>
+								<h4 class="text-weight-normal">Showing <%= data.posts.results.length %> <%= ( data.posts.results.length > 1 ? 'posts' : 'post' ) %></h4>
+							<% } %>
+						<% } else { %>
+
+							<% if ( data.category ) { %>
+								<h3 class="text-muted">There are no posts in the category <%= data.category.name %>.</h3>
+							<% } else { %>
+								<h3 class="text-muted">There are no posts yet.</h3>
+							<% } %>
+						<% } %>
+						<div class="blog">
+							<% data.posts.results.forEach( function ( post ) { %>
+							<div data-ks-editable="{
+								type: list,
+								path: 'keystone/posts',
+								singular: Post,
+								plural: Posts,
+								id: <%= post._id %>
+							}" class="post">
+								<h2><a href="/blog/post/<%= post.slug %>"><%= post.title %></a></h2>
+								<p>
+									Posted
+									<% if ( post.publishedDate ) { %>on <%= post._.publishedDate.format('MMMM Do, YYYY') %><% } %>
+									<% if ( post.categories && post.categories.length ) { %>
+									in
+										<% post.categories.forEach( function ( category, i ) { -%>
+											<a href="/blog/<%= category.key %>"><%= category.name %></a><% if ( i < post.categories.length -1 ) { %>, <% } %>
+										<% }) %>
+									<% } %>
+									<% if ( post.author.name.first ) { %>by <%= post.author.name.first %><% } %>
+								</p>
+								<% if ( post.image.exists ) { %>
+									<img src="<%= post._.image.fit(160,160) %>" class="img pull-right">
+								<% } %>
+								<p><%- post.content.brief %></p>
+								<% if ( post.content.extended ) { %>
+									<p class="read-more"><a href="/blog/post/<%= post.slug %>">Read more...</a></p>
+								<% } %>
+							</div>
+							<% }) %>
+						</div>
+					<% } %>
+					<% if ( data.posts.totalPages > 1 ) { %>
+					<ul class="pagination">
+						<% if ( data.posts.previous ) { %>
+							<li><a href="?page=<%= data.posts.previous %>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+						<% } else { %>
+							<li class="disabled"><a href="?page=<%= +1 %>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+						<% } %>
+						<% data.posts.pages.forEach( function ( page, i ) { %>
+							<li class="<%= ( data.posts.currentPage == page ? 'active' : null ) %>">
+								<a href="?page=<%= ( page == '...' ? ( i ? data.posts.totalPages : 1 ) : page ) %>"><%= page %></a>
+							</li>
+						<% }) %>
+						<% if ( data.posts.next ) { %>
+						<li><a href="?page=<%= data.posts.next %>"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+						<% } else { %>
+						<li class="disabled"><a href="?page=<%= data.posts.totalPages %>"><span class="entypo glyphicon glyphicon-chevron-right"></span></a></li>
+						<% } %>
+					</ul>
+					<% } %>
+				</div>
+				<% if ( data.categories.length ) { %>
+					<div class="col-sm-4 col-md-3">
+						<h2>Categories</h2>
+						<div style="margin-top: 70px;" class="list-group">
+							<a href="/blog" class="list-group-item <%= ( !data.category ? 'active' : null ) %>">All Categories</a>
+							<% data.categories.forEach(function ( category ) { %>
+							<a href="/blog/<%= category.key %>" class="list-group-item <%= ( data.category && data.category.id == category.id ? 'active' : null ) %>"><%= category.name %></a>
+							<% }) %>
+						</div>
+					</div>
+				<% } %>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="container"><%- include('../partials/footer') %></div>
