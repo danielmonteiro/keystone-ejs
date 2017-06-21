@@ -21,4 +21,22 @@
 // Add your own site style includes here
 @import "site/_layout"
 
+/* box-shadow mixin */
+box-shadow()
+  -webkit-box-shadow arguments
+  -moz-box-shadow arguments
+  box-shadow arguments
+  
+.body
+  .foo, .bar
+  	font-size 18px
+  	line-height 2
+  	border-radius 4px
 
+.foo
+  background-color mediumvioletred
+  color #fff
+  
+.bar
+  box-shadow 1px 1px 3px #000
+  

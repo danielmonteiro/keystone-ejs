@@ -6729,3 +6729,19 @@ button.close {
   max-width: 100%;
   height: auto;
 }
+/* box-shadow mixin */
+.body .foo,
+.body .bar {
+  font-size: 18px;
+  line-height: 2;
+  border-radius: 4px;
+}
+.foo {
+  background-color: #c71585;
+  color: #fff;
+}
+.bar {
+  -webkit-box-shadow: 1px 1px 3px #000;
+  -moz-box-shadow: 1px 1px 3px #000;
+  box-shadow: 1px 1px 3px #000;
+}
